@@ -28,14 +28,32 @@
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       var socket = io();
+
+      socket.on("connect", function(){
+         socket.emit('nick', prompt("Nick?"));
+      })
+
+      /*$("#m").keypress(function (e){
+        if(e.wich == 13){
+          socket.emit("chat message", $(this).val());
+          $(this).val('');
+        }
+      })*/
+
+
       $('form').submit(function(){
+       
+        console.log('chat',$('#m').val());
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
       });
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+
+      socket.on('chat message', function(nick,msg){
+        console.log('aaa',nick,msg);
+        $('#messages').append($('<li>').text('<strong>'+nick+': </strong>'+msg));
       });
+
     </script>
     
   </body>
